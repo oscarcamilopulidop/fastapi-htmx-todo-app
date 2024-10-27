@@ -21,20 +21,9 @@ This repository features a straightforward Todo List application developed using
    cd fastapi-htmx-todo-list
    ```
 
-2. **Create a virtual environment**:
+2. **Use docker :)**:
    ```bash
-   python -m venv venv
-   source venv/bin/activate
-   ```
-
-3. **Install dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Run the application**:
-   ```bash
-   fast-api dev main.py
+   docker compose up --build
    ```
 
 5. **Open your browser** and navigate to `http://127.0.0.1:8000/` to see the TODO application in action.
