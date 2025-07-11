@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ todo.title }} - Details</title>
+  <!-- Include Quill.js CSS -->
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css" />
+  <style>
+    body {
+      padding: 20px;
+    }
+    #editor-container {
+      height: 300px;
+      margin-bottom: 20px;
+    }
+    .button-container {
+      text-align: right;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>{{ todo.title }}</h1>
+    <p><a href="/todos">&laquo; Back to Todo List</a></p>
+  </header>
+
+  <main>
+    <form id="descriptionForm" method="post" action="/todos/{{ todo.id }}/description">
+      <input type="hidden" name="description" id="descriptionInput">
+      <label for="editor-container">Description:</label>
+      <div id="editor-container">
+        {{ todo.description | safe if todo.description else '' }}
+      </div>
+      <div class="button-container">
+        <button type="submit">Save Description</button>
+      </div>
+    </form>
+  </main>
+
+  <!-- Include Quill.js JS -->
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <script>
+    var quill = new Quill('#editor-container', {
+      theme: 'snow',
+      modules: {
+        toolbar: [
+          [{ 'header': [1, 2, 3, false] }],
+          ['bold', 'italic', 'underline', 'strike'],
+          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+          [{ 'script': 'sub'}, { 'script': 'super' }],
+          [{ 'indent': '-1'}, { 'indent': '+1' }],
+          [{ 'direction': 'rtl' }],
+          [{ 'align': [] }],
+          ['link', 'image', 'video'],
+          ['clean']
+        ]
+      }
+    });
+
+    // On form submit, copy the Quill content to the hidden input
+    var form = document.getElementById('descriptionForm');
+    form.onsubmit = function() {
+      var descriptionInput = document.getElementById('descriptionInput');
+      descriptionInput.value = quill.root.innerHTML;
+    };
+  </script>
+</body>
+
+</html>

@@ -7,6 +7,7 @@
                                hx-put="/todos/{{ todo.id }}" hx-target="#todos" hx-swap="innerHTML"
                                hx-trigger="keyup[key=='Enter']" onfocus="showHint(this)" 
                                oninput="showHint(this)" onblur="hideHint(this)" class="todo-input">
+                     <a href="/todos/{{ todo.id }}/edit" class="details-link">Details</a>
                      <input type="checkbox" {% if todo.done %}checked{% endif %}
                                hx-post="/todos/{{ todo.id }}/toggle" hx-target="#todos" 
                                hx-swap="innerHTML" class="todo-checkbox">
@@ -15,7 +16,7 @@
                            <i class="si-x icon"></i>
                      </button>
               </div>
-              <span class="hint">Press Enter to edit</span>
+              <span class="hint">Press Enter to edit title</span>
        </div>
 </li>
 {% endfor %}
@@ -37,6 +38,11 @@ function hideHint(input) {
 </script>
 
 <style>
+.details-link {
+       margin: 0 5px;
+       font-size: 0.9em;
+}
+
 .todo-item {
        margin-bottom: 10px;
 }
