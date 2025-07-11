@@ -36,6 +36,39 @@ async def create_todo(request: Request, todo: Annotated[str, Form()]):
     )
 
 
+@app.get("/todos/{todo_id}/edit", response_class=HTMLResponse)
+async def edit_todo_form(request: Request, todo_id: str):
+    found_todo = None
+    for todo_item in todos:
+        if str(todo_item.id) == todo_id:
+            found_todo = todo_item
+            break
+    if not found_todo:
+        # Optionally, handle not found error, e.g., redirect to list or show error page
+        return RedirectResponse(url="/todos", status_code=302)
+    return templates.TemplateResponse(
+        request=request, name="todo-detail.html", context={"todo": found_todo}
+    )
+
+
+@app.post("/todos/{todo_id}/description", response_class=HTMLResponse)
+async def save_todo_description(
+    request: Request, todo_id: str, description: Annotated[str, Form()]
+):
+    found_todo = None
+    for todo_item in todos:
+        if str(todo_item.id) == todo_id:
+            todo_item.description = description
+            found_todo = todo_item
+            break
+    if not found_todo:
+        return RedirectResponse(url="/todos", status_code=302) # Or handle error
+
+    # Redirect back to the edit page to see the saved description
+    # Alternatively, could redirect to /todos
+    return RedirectResponse(url=f"/todos/{todo_id}/edit", status_code=303)
+
+
 @app.put("/todos/{todo_id}", response_class=HTMLResponse)
 async def update_todo(request: Request, todo_id: str, text: Annotated[str, Form()]):
     for index, todo in enumerate(todos):

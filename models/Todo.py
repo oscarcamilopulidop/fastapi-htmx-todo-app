@@ -6,3 +6,4 @@ class Todo:
         self.id = uuid4()
         self.title = text
         self.done = False
+        self.description = ""
